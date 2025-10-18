@@ -1,0 +1,7 @@
+hostname := env_var('NIXOS_HOSTNAME')
+
+import './nix.just'
+import './nixos.just'
+
+default:
+  just --list
