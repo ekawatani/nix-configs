@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   features,
   ...
@@ -7,7 +6,7 @@
 
 {
   services = {
-    fal2ban = {
+    fail2ban = {
       enable = features.fail2ban;
     };
   };

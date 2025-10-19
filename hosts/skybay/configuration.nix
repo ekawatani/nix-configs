@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../nixos/services
+    ../../nixos
   ];
 
   boot.loader.grub.enable = true;

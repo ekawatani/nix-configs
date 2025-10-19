@@ -7,11 +7,18 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # nixos-wsl = {
     #   url = "github:nix-community/nixos-wsl";
@@ -21,7 +28,8 @@
 
   outputs =
     {
-      self,
+      catppuccin,
+      disko,
       nixpkgs,
       home-manager,
       ...
@@ -35,18 +43,25 @@
           modules ? [ ],
         }:
         let
-          features = import ./hosts/${hostname}/features.nix;
+          pkgs = import nixpkgs { inherit system; };
+          features = pkgs.callPackage ./hosts/${hostname}/features.nix { };
         in
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal-combined.nix"
-            ./hosts/${hostname}
+            disko.nixosModules.disko
+            ./hosts/${hostname}/configuration.nix
+            catppuccin.nixosModules.catppuccin
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${settings.username} = import ./home/home.nix;
+              home-manager.users.${settings.username} = {
+                imports = [
+                  ./home/home.nix
+                  catppuccin.homeModules.catppuccin
+                ];
+              };
               home-manager.extraSpecialArgs = {
                 inherit hostname;
                 inherit settings;

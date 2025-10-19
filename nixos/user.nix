@@ -1,15 +1,13 @@
 {
-  config,
   lib,
-  pkgs,
-  username,
+  settings,
   features,
   ...
 }:
 
 {
   users.users = {
-    ${username} = {
+    ${settings.username} = {
       isNormalUser = true;
       extraGroups = [ "wheel" ] ++ lib.optional features.networking [ "networkmanager" ];
       openssh.authorizedKeys.keys = [

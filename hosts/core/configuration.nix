@@ -2,14 +2,24 @@
   config,
   lib,
   pkgs,
+  modulesPath,
   ...
 }:
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ../../nixos/services
+    (modulesPath + "/installer/scan/not-detected.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ./disk-config.nix
+    ../../nixos
   ];
+
+  boot.loader.grub = {
+    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
+    # devices = [ ];
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

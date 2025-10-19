@@ -1,12 +1,11 @@
 {
-  config,
-  pkgs,
+  lib,
   features,
   ...
 }:
 
 {
   networking.networkmanager = {
-    enable = features.networkmanager;
+    enable = lib.mkDefault features.networking;
   };
 }

@@ -3,7 +3,6 @@
 {
   programs.starship = {
     enable = true;
-    catppuccin.enable = true;
 
     settings = {
       format = pkgs.lib.concatStrings ([
@@ -36,12 +35,12 @@
       };
 
       hostname = {
-        format = "[$ssh_symbol$hostname](cyan dimmed) ";
+        # format = "[$ssh_symbol$hostname](cyan dimmed) ";
         ssh_only = false;
       };
 
       username = {
-        format = "[$user@](cyan dimmed)";
+        # format = "[$user@](cyan dimmed)";
         show_always = true;
       };
     };
