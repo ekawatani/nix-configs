@@ -1,13 +1,13 @@
 {
+  config,
   lib,
-  features,
   ...
 }:
 
 {
   services = {
     fail2ban = {
-      enable = features.fail2ban;
+      enable = config.features.fail2ban.enabled;
     };
   };
 }
