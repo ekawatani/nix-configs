@@ -2,6 +2,12 @@
 
 {
   options.features = {
+    development = lib.mkOption {
+      description = "Enable development-related features";
+      type = lib.types.bool;
+      default = false;
+    };
+
     vscode = lib.mkOption {
       description = "VSCode configuration";
       type = lib.types.submodule {
@@ -17,7 +23,7 @@
 
   config = {
     features = {
-      vscode.enabled = false;
+      vscode.enabled = lib.mkDefault config.features.development;
     };
   };
 }

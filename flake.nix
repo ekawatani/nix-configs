@@ -36,26 +36,6 @@
     }@inputs:
 
     let
-      # Available hosts
-      hosts = {
-        core = {
-          name = "core";
-          createNixOs = true;
-          createHomeManager = true;
-        };
-        skybay = {
-          name = "skybay";
-          createNixOs = true;
-          createHomeManager = true;
-        };
-        wsl = {
-          name = "wsl";
-          createNixOs = false;
-          createHomeManager = true;
-        };
-      };
-
-      # Settings common across all hosts and users
       settings = import ./settings.nix;
 
       # A function to create NixOS configurations for different hosts
@@ -91,39 +71,27 @@
           inherit pkgs;
           modules = [
             ./modules/features.home-manager.nix
-            ./home/home.nix
+            ./configs/home/home.nix
             catppuccin.homeModules.catppuccin
           ];
-          specialArgs = {
+          extraSpecialArgs = {
             inherit hostname;
             inherit settings;
           };
         };
+
+      # Create NixOS configurations for hosts where nixos = true
+      nixosHosts = nixpkgs.lib.filterAttrs (_: host: host.nixos) settings.hosts;
+      # Create Home Manager configurations for hosts where home-manager = true
+      homeManagerHosts = nixpkgs.lib.filterAttrs (_: host: host."home-manager") settings.hosts;
     in
     {
-      nixosConfigurations = {
-        core = createNixOsConfig {
-          hostname = "core";
-        };
-        skybay = createNixOsConfig {
-          hostname = "skybay";
-        };
-        # wsl = createNixOsConfig {
-        #   hostname = "wsl";
-        #   system = "x86_64-windows";
-        # }
-      };
+      nixosConfigurations = nixpkgs.lib.mapAttrs (
+        name: host: createNixOsConfig { hostname = name; }
+      ) nixosHosts;
 
-      homeConfigurations = {
-        core = createHomeManagerConfig {
-          hostname = "core";
-        };
-        skybay = createHomeManagerConfig {
-          hostname = "skybay";
-        };
-        wsl = createHomeManagerConfig {
-          hostname = "wsl";
-        };
-      };
+      homeConfigurations = nixpkgs.lib.mapAttrs (
+        name: host: createHomeManagerConfig { hostname = name; }
+      ) homeManagerHosts;
     };
 }

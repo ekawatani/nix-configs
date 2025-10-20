@@ -50,7 +50,7 @@
     # '';
 
     ".config/just/" = {
-      source = ./config/just;
+      source = ./just;
     };
 
     ".justfile" = {
@@ -78,7 +78,7 @@
       neofetch
       which
     ]
-    ++ lib.optional features.development [
+    ++ lib.optional config.features.development [
       node2nix
     ];
 
@@ -116,5 +116,5 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "25.05"; # Please read the comment before changing.
+  home.stateVersion = "23.11"; # Please read the comment before changing.
 }
