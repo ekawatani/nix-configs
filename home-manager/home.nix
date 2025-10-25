@@ -54,7 +54,7 @@
     };
 
     ".justfile" = {
-      source = ./just/justfile;
+      source = ./hosts/${hostname}/justfile;
     };
   };
 

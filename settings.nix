@@ -8,16 +8,13 @@
   # home-manager - Whether to create a Home Manager configuration for this host.
   hosts = {
     core = {
-      nixos = true;
-      home-manager = true;
+      type = "nixos";
     };
     skybay = {
-      nixos = true;
-      home-manager = true;
+      type = "nixos";
     };
     wsl = {
-      nixos = false;
-      home-manager = true;
+      type = "nix";
     };
   };
 

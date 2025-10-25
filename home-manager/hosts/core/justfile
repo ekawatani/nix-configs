@@ -1,0 +1,4 @@
+import './.config/just/nixos.just'
+
+default:
+  just --list

@@ -1,0 +1,4 @@
+import './.config/just/nix.just'
+
+default:
+  just --list

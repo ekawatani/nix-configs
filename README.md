@@ -2,7 +2,7 @@
 
 To deploy this to a remote server, run:
 
-> nix run nixpkgs#nixos-anywhere -- --flake .#<hostname> --generate-hardware-config nixos-generate-config ./hosts/<hostname>/hardware-configuration.nix <server address>
+> nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./nixos/hosts/<hostname>/hardware-configuration.nix --flake .#<hostname> --target-host root@<server address> --build-on remote
 
 Testing flake locally
 

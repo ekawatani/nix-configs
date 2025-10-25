@@ -51,6 +51,22 @@
             ./modules/features.nixos.nix
             ./nixos/hosts/${hostname}/configuration.nix
             catppuccin.nixosModules.catppuccin
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit hostname;
+                inherit settings;
+              };
+
+              home-manager.users.${settings.username} = {
+                imports = [
+                  ./modules/features.home-manager.nix
+                  ./home-manager/hosts/${hostname}/home.nix
+                ];
+              };
+            }
           ];
           specialArgs = {
             inherit hostname;
@@ -80,8 +96,8 @@
           };
         };
 
-      nixosHosts = nixpkgs.lib.filterAttrs (_: host: host.nixos) settings.hosts;
-      homeManagerHosts = nixpkgs.lib.filterAttrs (_: host: host."home-manager") settings.hosts;
+      nixosHosts = nixpkgs.lib.filterAttrs (_: host: host.type == "nixos") settings.hosts;
+      homeManagerHosts = nixpkgs.lib.filterAttrs (_: host: host.type == "nix") settings.hosts;
     in
     {
       nixosConfigurations = nixpkgs.lib.mapAttrs (
