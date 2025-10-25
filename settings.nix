@@ -2,10 +2,7 @@
   # Defines the main username to be used in the configurations.
   username = "eigo";
 
-  # Defines the hosts to manage.
-  # For each host:
-  # nixos - Whether to create a NixOS configuration for this host.
-  # home-manager - Whether to create a Home Manager configuration for this host.
+  # Defines available hosts.
   hosts = {
     core = {
       type = "nixos";

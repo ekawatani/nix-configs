@@ -38,6 +38,12 @@
     let
       settings = import ./settings.nix;
 
+      # A function to get the common home-manager modules for a host
+      getHomeManagerModules = hostname: [
+        ./modules/features.home-manager.nix
+        ./home-manager/hosts/${hostname}/home.nix
+      ];
+
       # A function to create NixOS configurations for different hosts
       createNixOsConfig =
         {
@@ -61,10 +67,7 @@
               };
 
               home-manager.users.${settings.username} = {
-                imports = [
-                  ./modules/features.home-manager.nix
-                  ./home-manager/hosts/${hostname}/home.nix
-                ];
+                imports = getHomeManagerModules hostname;
               };
             }
           ];
@@ -85,9 +88,7 @@
         in
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [
-            ./modules/features.home-manager.nix
-            ./home-manager/hosts/${hostname}/home.nix
+          modules = (getHomeManagerModules hostname) ++ [
             catppuccin.homeModules.catppuccin
           ];
           extraSpecialArgs = {
