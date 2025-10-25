@@ -49,7 +49,7 @@
           modules = [
             disko.nixosModules.disko
             ./modules/features.nixos.nix
-            ./hosts/${hostname}/configuration.nix
+            ./nixos/hosts/${hostname}/configuration.nix
             catppuccin.nixosModules.catppuccin
           ];
           specialArgs = {
@@ -71,7 +71,7 @@
           inherit pkgs;
           modules = [
             ./modules/features.home-manager.nix
-            ./configs/home/home.nix
+            ./home-manager/hosts/${hostname}/home.nix
             catppuccin.homeModules.catppuccin
           ];
           extraSpecialArgs = {
@@ -80,9 +80,7 @@
           };
         };
 
-      # Create NixOS configurations for hosts where nixos = true
       nixosHosts = nixpkgs.lib.filterAttrs (_: host: host.nixos) settings.hosts;
-      # Create Home Manager configurations for hosts where home-manager = true
       homeManagerHosts = nixpkgs.lib.filterAttrs (_: host: host."home-manager") settings.hosts;
     in
     {
